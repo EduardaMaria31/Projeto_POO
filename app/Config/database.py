@@ -1,29 +1,39 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# URL de conexão com o banco de dados (usando SQLite local)
+# ======================================================
+# CONFIGURAÇÃO DO BANCO DE DADOS
+# ======================================================
+
+# Caminho do banco SQLite
 SQLALCHEMY_DATABASE_URL = "sqlite:///./viagens.db"
 
-# Criação do "motor" que faz a conexão com o banco
-# O parâmetro connect_args é necessário apenas para SQLite
+# Criação do engine
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    connect_args={"check_same_thread": False}  # Necessário para SQLite + múltiplas threads
 )
 
-# Criação da sessão (conexão temporária com o banco)
+# Sessão do banco
 SessionLocal = sessionmaker(
-    autocommit=False,  # exige commit manual (segurança)
-    autoflush=False,   # evita flush automático antes das queries
+    autocommit=False,
+    autoflush=False,
     bind=engine
 )
 
-# Base que servirá de herança para os modelos ORM
+# Base para os modelos ORM
 Base = declarative_base()
-Base.__allow_unmapped__ = True  # permite classes com anotações antigas (SQLAlchemy 2.0+)
+Base.__allow_unmapped__ = True
 
-# Dependência usada no FastAPI para abrir e fechar a sessão com o banco
+
+# ======================================================
+# GERENCIADOR DE SESSÃO (DEPENDÊNCIA DO FASTAPI)
+# ======================================================
 def get_db():
+    """
+    Abre uma sessão com o banco para cada requisição.
+    Fecha automaticamente após a resposta.
+    """
     db = SessionLocal()
     try:
         yield db
