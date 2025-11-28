@@ -42,3 +42,4 @@ def deletar_cliente(cliente_id: int, db: Session = Depends(get_db)):
     db.delete(cliente)
     db.commit()
     return {"mensagem": "Cliente removido com sucesso"}
+

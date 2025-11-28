@@ -42,3 +42,4 @@ def deletar_destino(destino_id: int, db: Session = Depends(get_db)):
     db.delete(destino)
     db.commit()
     return {"mensagem": "Destino removido com sucesso"}
+
