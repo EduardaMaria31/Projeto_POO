@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.config.database import get_db
 from app.models.models import DBDestino
-from app.schemas.destino_schema import DestinoBase, DestinoCreate, DestinoOut
+from app.schemas.destino_schema import DestinoCreate, DestinoOut
 
 router = APIRouter(prefix="/destinos", tags=["Destinos"])
 
