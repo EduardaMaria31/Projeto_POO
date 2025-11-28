@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.database import Base, engine
-from app.rotas.routers import router
+from app.controlles import cliente_controller, destino_controller, reserva_controller
+
 
 # ============================================================
 #  🔧 CONFIGURAÇÃO DO BANCO – cria tabelas automaticamente
@@ -45,7 +46,13 @@ app.add_middleware(
 # ============================================================
 #  📌 REGISTRO DAS ROTAS DA APLICAÇÃO
 # ============================================================
-app.include_router(router)
+#app.include_router(router)
+
+app.include_router(cliente_controller.router)
+app.include_router(destino_controller.router)
+app.include_router(reserva_controller.router)
+
+
 
 
 # ============================================================
@@ -71,6 +78,4 @@ def read_root():
     }
 
 
-# Debug opcional (pode remover)
-print("Rotas carregadas:", router.routes)
 
